@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WhatsApp Clone</string>
+    <string name="hello_blank_fragment">Hello fragment</string>
+    <string name="login_title">Login</string>
+    <string name="login_subtitle">Enter your data to enter the system</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="create_account_link">Create account</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="message_login_success">Login successful</string>
+    <string name="message_forgot_password_success">An e-mail to recover your password was sent to you.</string>
+    <string name="login_account_link">Sign In</string>
+    <string name="register">Create account</string>
+    <string name="register_subtitle">Fill in with your data to create your account</string>
+    <string name="register_title">Register</string>
+    <string name="name">Name</string>
+</resources>

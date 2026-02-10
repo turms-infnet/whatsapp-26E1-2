@@ -5,13 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".activities.LoginActivity">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +25,8 @@
         android:layout_height="wrap_content"
         android:text="@string/login_title"
         android:textSize="24sp"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"
-        tools:layout_editor_absoluteX="176dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
@@ -36,8 +37,8 @@
         android:textSize="14sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="@string/login_subtitle"
-        tools:layout_editor_absoluteX="176dp"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +46,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textLayoutEmail"
+        android:layout_marginTop="24dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -72,6 +74,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textLayoutPassword"
+        android:layout_marginTop="24dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -83,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLayoutEmail"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
+        app:layout_constraintBottom_toTopOf="@+id/forgotPassword"
         app:boxBackgroundColor="@color/white"
         app:boxBackgroundMode="filled"
         app:boxStrokeWidth="0dp"
@@ -103,8 +106,7 @@
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
         android:onClick="forgotPassword"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="461dp"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +121,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:onClick="signIn"
-        android:text="@string/entrar"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@+id/linkToRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,13 +133,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_account_link"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="461dp"
+        android:textColor="@color/white"
         android:onClick="goToRegisterPage"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSignIn" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

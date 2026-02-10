@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
 import dev.tiagosilva.whatsappclone.R
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
+import dev.tiagosilva.whatsappclone.utils.Validations
 
 class LoginActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
@@ -32,10 +33,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signIn(view: View) {
-        println(emailInput.text.toString())
-        println(passwordInput.text.toString())
+        if(!Validations.validateUserInputs(emailInput, passwordInput)) return
 
-        Toast.makeText(this@LoginActivity, "Login realizado com sucesso", Toast.LENGTH_LONG).show();
+        Toast.makeText(this@LoginActivity, R.string.message_login_success, Toast.LENGTH_LONG).show();
 //        val intent = Intent(this, MainActivity::class.java)
 //        startActivity(intent)
 //        finish()
@@ -44,11 +44,12 @@ class LoginActivity : AppCompatActivity() {
     fun forgotPassword(view: View) {
         println(emailInput.text.toString())
 
-        Toast.makeText(this@LoginActivity, "Um e-mail de recuperação foi enviado para você.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this@LoginActivity, R.string.message_forgot_password_success, Toast.LENGTH_LONG).show();
     }
 
     fun goToRegisterPage(view: View) {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
