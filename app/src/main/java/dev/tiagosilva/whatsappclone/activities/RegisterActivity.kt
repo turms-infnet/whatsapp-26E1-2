@@ -17,6 +17,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var emailInput: TextInputEditText
     private lateinit var passwordInput: TextInputEditText
     private lateinit var nameInput: TextInputEditText
+    private lateinit var phoneInput: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
         emailInput = findViewById(R.id.editTextEmail);
         passwordInput = findViewById(R.id.editTextPassword);
         nameInput = findViewById(R.id.editTextName);
+        phoneInput = findViewById(R.id.editTextPhone);
     }
 
     fun signUp(view: View) {

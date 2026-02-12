@@ -33,12 +33,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signIn(view: View) {
-        if(!Validations.validateUserInputs(emailInput, passwordInput)) return
+//        if(!Validations.validateUserInputs(emailInput, passwordInput)) return
 
         Toast.makeText(this@LoginActivity, R.string.message_login_success, Toast.LENGTH_LONG).show();
-//        val intent = Intent(this, MainActivity::class.java)
-//        startActivity(intent)
-//        finish()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     fun forgotPassword(view: View) {

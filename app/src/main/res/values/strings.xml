@@ -15,5 +15,6 @@
     <string name="register_subtitle">Preencha com seus dados para criar sua conta</string>
     <string name="register_title">Cadastrar</string>
     <string name="name">Nome</string>
+    <string name="phone">Celular</string>
 
 </resources>
