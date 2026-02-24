@@ -6,6 +6,7 @@
     <string name="login_subtitle">Enter your data to enter the system</string>
     <string name="email">E-mail</string>
     <string name="password">Password</string>
+    <string name="password_confirm">Password confirm</string>
     <string name="login">Login</string>
     <string name="create_account_link">Create account</string>
     <string name="forgot_password">Forgot Password</string>
@@ -17,4 +18,18 @@
     <string name="register_title">Register</string>
     <string name="name">Name</string>
     <string name="phone">Cellphone</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_phone_required">Phone is required</string>
+    <string name="error_phone_length">Phone should be at least 9 digits</string>
+    <string name="error_email_required">E-mail is required</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_should_be_at_least_6_characters">Password should be at least 6 characters</string>
+    <string name="error_password_should_contain_at_least_one_uppercase_letter">Password should contain at least one uppercase letter, one lowercase letter, one number and one special character</string>
+    <string name="error_email_not_valid">Put a valid e-mail</string>
+    <string name="error_phone_not_valid">Invalid phone</string>
+    <string name="error_password_confirm_required">Confirm password is required</string>
+    <string name="error_password_should_be_equal">The passwords are not equal</string>
+    <string name="search_menu">Search</string>
+    <string name="profile_menu">Profile</string>
+    <string name="logout_menu">Logout</string>
 </resources>

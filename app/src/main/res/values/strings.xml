@@ -5,6 +5,7 @@
     <string name="login_subtitle">Digite seus dados para entrar no sistema</string>
     <string name="email">E-mail</string>
     <string name="password">Senha</string>
+    <string name="password_confirm">Confirmar Senha</string>
     <string name="login">Entrar</string>
     <string name="create_account_link">Criar uma conta</string>
     <string name="forgot_password">Esqueci minha senha</string>
@@ -16,5 +17,18 @@
     <string name="register_title">Cadastrar</string>
     <string name="name">Nome</string>
     <string name="phone">Celular</string>
-
+    <string name="error_name_required">Nome é obrigatório</string>
+    <string name="error_phone_required">Telefone é obrigatório</string>
+    <string name="error_phone_length">Telefone precisa ter pelo menos 9 dígitos</string>
+    <string name="error_email_required">E-mail é obrigatório</string>
+    <string name="error_password_required">Senha é obrigatória</string>
+    <string name="error_password_should_be_at_least_6_characters">Senha precisa ter pelo menos 6 caracteres</string>
+    <string name="error_password_should_contain_at_least_one_uppercase_letter">Senha deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial</string>
+    <string name="error_email_not_valid">Digite um e-mail válido</string>
+    <string name="error_phone_not_valid">Telefone inválido</string>
+    <string name="error_password_confirm_required">Confirmar senha é obrigatório</string>
+    <string name="error_password_should_be_equal">As senhas não são iguais</string>
+    <string name="search_menu">Buscar</string>
+    <string name="profile_menu">Perfil</string>
+    <string name="logout_menu">Sair</string>
 </resources>

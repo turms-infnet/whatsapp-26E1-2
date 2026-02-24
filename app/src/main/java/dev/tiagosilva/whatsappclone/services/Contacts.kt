@@ -44,7 +44,11 @@ class Contacts {
                     val _number = it.getString(number)
 
                     val _contact = Contact(_id, _name, _number)
-                    contacts.add(_contact)
+                    // TODO: Verificar no banco do firebase
+                    val hasContactFirebase = true
+                    if (hasContactFirebase) {
+                        contacts.add(_contact)
+                    }
                 }
             }
 

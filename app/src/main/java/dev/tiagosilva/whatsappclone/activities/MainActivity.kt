@@ -1,8 +1,11 @@
 package dev.tiagosilva.whatsappclone.activities
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,11 +14,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import dev.tiagosilva.whatsappclone.R
+import dev.tiagosilva.whatsappclone.adapters.MainTabsAdapter
 import dev.tiagosilva.whatsappclone.data.Contact
 import dev.tiagosilva.whatsappclone.services.Contacts
+import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
 
 class MainActivity : AppCompatActivity() {
+    private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
     private val PERMISSION_CODE = 100
     private val PERMISSION_LIST = arrayOf(
         android.Manifest.permission.READ_CONTACTS,
@@ -48,9 +56,23 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        val viewPager = findViewById<ViewPager>(R.id.viewPager)
+        viewPager.adapter = MainTabsAdapter(supportFragmentManager)
+
+        val tabs = findViewById<TabLayout>(R.id.tabs)
+        tabs.setupWithViewPager(viewPager)
+
         checkAndRequestPermission()
-//        val contacts: List<Contact> = Contacts.listContacts(this)
-        
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser == null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun checkAndRequestPermission() {
@@ -63,6 +85,31 @@ class MainActivity : AppCompatActivity() {
 
         if(listPermissionNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionNeeded.toTypedArray(), PERMISSION_CODE)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menu ?: return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.searchMenu -> true
+            R.id.profileMenu -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.logoutMenu -> {
+                firebaseAuth.signOut()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
