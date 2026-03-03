@@ -25,6 +25,15 @@ class ContactFragment : Fragment() {
         if (contacts.isNotEmpty()) {
             Log.d("Contato", contacts[0].nome)
         }
-        return inflater.inflate(R.layout.fragment_contact, container, false)
+        val view = inflater.inflate(R.layout.fragment_contact, container, false)
+
+//        TODO: Implementar listagem
+
+        loadContacts()
+        return view
+    }
+
+    private fun loadContacts() {
+
     }
 }

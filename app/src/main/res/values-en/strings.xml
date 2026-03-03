@@ -32,4 +32,5 @@
     <string name="search_menu">Search</string>
     <string name="profile_menu">Profile</string>
     <string name="logout_menu">Logout</string>
+    <string name="contact_name">Contact name</string>
 </resources>

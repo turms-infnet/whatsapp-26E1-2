@@ -9,12 +9,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import dev.tiagosilva.whatsappclone.R
+import dev.tiagosilva.whatsappclone.services.Appwrite
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
 import dev.tiagosilva.whatsappclone.utils.Validations
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
