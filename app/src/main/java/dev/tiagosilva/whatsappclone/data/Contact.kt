@@ -1,3 +1,3 @@
 package dev.tiagosilva.whatsappclone.data
 
-data class Contact(val id: String, val nome: String, val telefone: String, val image: String? = null)
+data class Contact(val id: String, val nome: String?, val telefone: String?, val image: String? = null)

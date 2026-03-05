@@ -17,4 +17,7 @@
     <style name="CircleImage">
         <item name="cornerSize">50%</item>
     </style>
+    <style name="ShapeAppearance.Circle" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

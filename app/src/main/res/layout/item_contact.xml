@@ -15,13 +15,26 @@
         android:src="@drawable/baseline_account_circle_24"
         app:shapeAppearanceOverlay="@style/CircleImage"/>
 
-    <TextView
-        android:id="@+id/txtName"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/contact_name"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/contact_name"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/txtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/contact_phone"
+            android:textSize="17sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
 </LinearLayout>

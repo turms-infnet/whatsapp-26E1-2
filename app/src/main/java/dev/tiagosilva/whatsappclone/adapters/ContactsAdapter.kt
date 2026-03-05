@@ -15,6 +15,7 @@ class ContactsAdapter(private val contacts: List<Contact>):
 
     class ContactViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val txtName: TextView = view.findViewById(R.id.txtName)
+        val txtPhone: TextView = view.findViewById(R.id.txtPhone)
         val imageProfile: ShapeableImageView = view.findViewById(R.id.imageProfile)
     }
 
@@ -29,6 +30,7 @@ class ContactsAdapter(private val contacts: List<Contact>):
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = contacts[position]
         holder.txtName.text = contact.nome
+        holder.txtPhone.text = contact.telefone
         val avatarUrl = if (!contact.image.isNullOrEmpty()) {
             contact.image
         } else {
