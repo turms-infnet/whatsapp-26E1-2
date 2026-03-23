@@ -88,6 +88,19 @@ class Contacts {
                             contactsFiltered.add(contactItem)
                         }
                     }
+//                    Pode escolher
+//                    val snapshot = firebaseDatabase.child("users").orderByChild("phone").equalTo(phone.toString()).get().await()
+//                    if (snapshot.exists()) {
+//                        val userNode = snapshot.children.first()
+//                        if (userNode != null) {
+//                            val uid: String? = userNode.child("uid").value?.toString()
+//                            val phone: String?  = userNode.child("phone").value?.toString()
+//                            val photoUrl: String?  = userNode.child("photoUrl").value?.toString()
+//
+//                            val contactItem = Contact(uid, contact.nome, phone, photoUrl)
+//                            contactsFiltered.add(contactItem)
+//                        }
+//                    }
                 }
 
                 val json = gson.toJson(contactsFiltered)

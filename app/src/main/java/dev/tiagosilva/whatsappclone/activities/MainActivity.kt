@@ -18,8 +18,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dev.tiagosilva.whatsappclone.R
 import dev.tiagosilva.whatsappclone.adapters.MainTabsAdapter
-import dev.tiagosilva.whatsappclone.data.Contact
-import dev.tiagosilva.whatsappclone.services.Contacts
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
 
 class MainActivity : AppCompatActivity() {
@@ -98,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.searchMenu -> true
             R.id.profileMenu -> {
-                val intent = Intent(this, SettingsActivity::class.java)
+                val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
                 true
             }

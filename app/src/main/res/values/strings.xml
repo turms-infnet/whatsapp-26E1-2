@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WhatsApp Clone</string>
+    <string name="app_name">WhatsApp</string>
     <string name="hello_blank_fragment">Olá fragmento</string>
     <string name="login_title">Entrar</string>
     <string name="login_subtitle">Digite seus dados para entrar no sistema</string>
@@ -33,4 +33,13 @@
     <string name="logout_menu">Sair</string>
     <string name="contact_name">Nome do contato</string>
     <string name="contact_phone">Telefone</string>
+    <string name="gallery_button">Botão de galeria</string>
+    <string name="camera_button">Botão de câmera</string>
+    <string name="refresh_list">Atualizar</string>
+    <string name="update_account">Atualizar</string>
+    <string name="default_theme">Padrão</string>
+    <string name="light_theme">Claro</string>
+    <string name="dark_theme">Escuro</string>
+    <string name="select_theme">Selecione um tema:</string>
+    <string name="last_message">Última mensagem</string>
 </resources>

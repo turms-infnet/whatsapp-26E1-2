@@ -5,93 +5,49 @@ import android.util.Log
 import io.appwrite.Client
 import io.appwrite.ID
 import io.appwrite.exceptions.AppwriteException
+import io.appwrite.models.InputFile
 import io.appwrite.models.Session
 import io.appwrite.models.User
 import io.appwrite.services.Account
 import io.appwrite.services.Databases
 import io.appwrite.services.Storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object Appwrite {
     private lateinit var client: Client
     lateinit var account: Account
     lateinit var databases: Databases
     lateinit var storage: Storage
-
-    private val databaseId = "69a620770035319049e9"
-    private val storageId = "69a62488000ea01ea8e8"
+    private val URL: String = "https://nyc.cloud.appwrite.io/v1"
+    private val PROJECT_ID: String = "69a61b56002a65a2a11a"
+    private val BUCKET_ID = "69a62488000ea01ea8e8"
+    private val DATABASE_ID = "69a620770035319049e9"
 
     fun init(context: Context) {
         client = Client(context)
-            .setEndpoint("https://nyc.cloud.appwrite.io/v1")
-            .setProject("69a61b56002a65a2a11a")
+            .setEndpoint(URL)
+            .setProject(PROJECT_ID)
 
         account = Account(client)
         databases = Databases(client)
         storage = Storage(client)
     }
 
-    suspend fun createDocument(
-        collectionId: String,
-        data: Map<String, Any>
-    ) {
-        databases.createDocument(
-            databaseId=databaseId,
-            collectionId=collectionId,
-            documentId = ID.unique(),
-            data=data
-        )
-    }
-
-    suspend fun onLogin(
-        email: String,
-        password: String
-    ): Session {
-        return account.createEmailPasswordSession(
-            email = email,
-            password = password
-        )
-    }
-
-    suspend fun onUpdatePhone(phone: String, password: String) {
-        account.updatePhone(phone, password)
-    }
-
-    suspend fun onLogout() {
+    suspend fun uploadImageAndGetUrl(file: java.io.File): String? = withContext(Dispatchers.IO) {
         try {
-            account.deleteSession(sessionId = "current")
-        }catch(e: AppwriteException) {
-            Log.e("Erro no logout", e.message.toString())
-        }
-    }
+            val uploaded = storage.createFile(
+                bucketId = BUCKET_ID,
+                fileId = ID.unique(),
+                file = InputFile.fromFile(file),
+            )
 
-    suspend fun isLoggedIn(): Boolean {
-        return try {
-            account.get()
-            true
-        } catch (e: AppwriteException) {
-            false
-        }
-    }
-
-    suspend fun getCurrentUserOrNull(): User<Map<String, Any>>? {
-        return try {
-            account.get()
-        } catch (e: AppwriteException) {
+            val url = "${URL}/storage/buckets/${BUCKET_ID}/files/${uploaded.id}/view?project=${PROJECT_ID}"
+            url
+        } catch (e: Exception) {
+            Log.e("Appwrite", "Erro ao fazer upload: ", e)
             null
         }
-    }
-
-    suspend fun onRegister(
-        email: String,
-        password: String,
-        name: String
-    ): User<Map<String, Any>> {
-        return account.create(
-            userId = ID.unique(),
-            email = email,
-            password = password,
-            name = name
-        )
     }
 }
 
