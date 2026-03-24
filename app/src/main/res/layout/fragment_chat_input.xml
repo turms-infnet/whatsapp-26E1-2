@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/send_a_message"
+        android:maxLines="5"
+        android:minHeight="48dp"
+        android:inputType="text"
+        android:autofillHints="emailAddress"
+        android:padding="8dp"
+        />
+    <ImageButton
+        android:id="@+id/btnLocation"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/map"
+        android:background="@drawable/bg_arredondado_branco"
+        android:contentDescription="@string/sendLocationButton" />
+    <ImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/send_mail"
+        android:background="@drawable/bg_arredondado_branco"
+        android:contentDescription="@string/sendMessageButton" />
+</LinearLayout>

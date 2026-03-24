@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,27 +38,29 @@ class ChatsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chats, container, false)
         pbLoading = view.findViewById<ProgressBar>(R.id.pbLoading)
-
         rvChats = view.findViewById(R.id.rvChats)
         rvChats.layoutManager = LinearLayoutManager(requireContext())
-        loadChats()
-
+        adapter = ChatsAdapter(chats) { chat ->
+            if (isAdded && activity != null) {
+                openChat(chat)
+            }
+        }
+        rvChats.adapter = adapter
         sharedPreferences = requireContext().getSharedPreferences("chat_cache", Context.MODE_PRIVATE)
-        loadChatsFromCache()
         loadChatsFromFirebase()
-
         return view
     }
 
     private fun loadChatsFromFirebase() {
-        val uid = firebaseAuth.currentUser?.uid ?: return
+        pbLoading.visibility = View.VISIBLE
+        val uid = firebaseAuth.currentUser?.uid ?: run {
+            pbLoading.visibility = View.GONE
+            return
+        }
         val dbChats = firebaseDatabase.child("chats")
         val dbUsers = firebaseDatabase.child("users")
-
         dbChats.get().addOnSuccessListener { snapshot ->
-            val chats = mutableListOf<Chat>()
             val userUids = mutableListOf<String>()
-
             for (chatSnap in snapshot.children){
                 val chatId = chatSnap.key ?: continue
                 if (chatId.contains(uid)) {
@@ -65,35 +68,40 @@ class ChatsFragment : Fragment() {
                     userUids.add(otherUid)
                 }
             }
-
-            // TODO: Buscar os nomes e imagens desses contatos
-            for(user in userUids){
-
+            // Exemplo: buscar dados dos usuários e criar objetos Chat
+            chats.clear()
+            if (userUids.isEmpty()) {
+                adapter.notifyDataSetChanged()
+                pbLoading.visibility = View.GONE
+                return@addOnSuccessListener
             }
-        }
-    }
-
-    private fun loadChatsFromCache() {
-        TODO("Not yet implemented")
-    }
-
-    private fun openChat(chat: Chat) {}
-
-    fun loadChats() {
-        try {
-            pbLoading.visibility = View.VISIBLE
-            adapter = ChatsAdapter(chats) { chat ->
-                if (isAdded && activity != null) {
-                    openChat(chat)
+            var loaded = 0
+            for (user in userUids) {
+                dbUsers.child(user).get().addOnSuccessListener { userSnap ->
+                    val name = userSnap.child("displayName").value?.toString() ?: "Sem nome"
+                    val photoUrl = userSnap.child("photoUrl").value?.toString() ?: ""
+                    val chat = Chat(user, name, photoUrl)
+                    chats.add(chat)
+                    loaded++
+                    if (loaded == userUids.size) {
+                        if (isAdded) adapter.notifyDataSetChanged()
+                        pbLoading.visibility = View.GONE
+                    }
+                }.addOnFailureListener {
+                    loaded++
+                    if (loaded == userUids.size) {
+                        if (isAdded) adapter.notifyDataSetChanged()
+                        pbLoading.visibility = View.GONE
+                    }
                 }
             }
-            rvChats.adapter = adapter
-        } catch (e: Exception) {
-            Log.e("loadChats", "Erro ao carregar conversas: ", e)
-        }
-        finally {
+        }.addOnFailureListener {
             pbLoading.visibility = View.GONE
         }
     }
-}
 
+    private fun openChat(chat: Chat) {
+        // TODO: Implemente a navegação para a tela de chat
+        Toast.makeText(requireContext(), "Abrir chat com ${chat.contactName}", Toast.LENGTH_SHORT).show()
+    }
+}

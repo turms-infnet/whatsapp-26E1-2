@@ -42,4 +42,7 @@
     <string name="dark_theme">Escuro</string>
     <string name="select_theme">Selecione um tema:</string>
     <string name="last_message">Última mensagem</string>
+    <string name="sendMessageButton">Botão de envio de mensagem</string>
+    <string name="sendLocationButton">Botão de envio de localização</string>
+    <string name="send_a_message">Envie uma mensagem</string>
 </resources>

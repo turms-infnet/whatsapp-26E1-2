@@ -10,7 +10,7 @@ import dev.tiagosilva.whatsappclone.data.Contact
 import dev.tiagosilva.whatsappclone.R
 import com.bumptech.glide.Glide
 
-class ContactsAdapter(private val contacts: List<Contact>):
+class ContactsAdapter(private val contacts: List<Contact>, private val onClick: (Contact) -> Unit):
     RecyclerView.Adapter<ContactsAdapter.ContactViewHolder>() {
 
     class ContactViewHolder(view: View): RecyclerView.ViewHolder(view) {
@@ -42,7 +42,11 @@ class ContactsAdapter(private val contacts: List<Contact>):
             .load(avatarUrl)
             .placeholder(R.drawable.baseline_account_circle_24)
             .error(R.drawable.baseline_account_circle_24)
-            .into(holder.imageProfile);
+            .into(holder.imageProfile)
+
+        holder.itemView.setOnClickListener {
+            onClick(contact)
+        }
     }
 
     override fun getItemCount() = contacts.size

@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
+    private lateinit var viewPager: ViewPager
+    private lateinit var tabs: TabLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -54,13 +57,28 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val viewPager = findViewById<ViewPager>(R.id.viewPager)
+        viewPager = findViewById(R.id.viewPager)
+        tabs = findViewById(R.id.tabs)
+
+        if (hasAllPermissions()) {
+            setupViewPagerAndTabs()
+        } else {
+            checkAndRequestPermission()
+        }
+    }
+
+    private fun hasAllPermissions(): Boolean {
+        for (permission in PERMISSION_LIST) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun setupViewPagerAndTabs() {
         viewPager.adapter = MainTabsAdapter(supportFragmentManager)
-
-        val tabs = findViewById<TabLayout>(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-
-        checkAndRequestPermission()
     }
 
     override fun onStart() {
@@ -74,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAndRequestPermission() {
-        val listPermissionNeeded = ArrayList<String>();
+        val listPermissionNeeded = ArrayList<String>()
         for(permission in PERMISSION_LIST) {
             if(ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 listPermissionNeeded.add(permission)
@@ -132,6 +150,7 @@ class MainActivity : AppCompatActivity() {
 
             if (deniedPermission.isEmpty()) {
                 Toast.makeText(this, "Permissões concedidas", Toast.LENGTH_SHORT).show()
+                setupViewPagerAndTabs()
             } else {
                 Toast.makeText(this, "As seguintes permissões são obrigatórias nesse app: Lista de contatos.", Toast.LENGTH_SHORT).show()
             }
