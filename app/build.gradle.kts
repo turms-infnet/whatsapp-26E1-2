@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.circleimageview)
-    implementation("io.appwrite:sdk-for-android:5.1.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.sdk.for1.android)
+    implementation(libs.glide)
+    implementation(libs.play.services.location)
 }

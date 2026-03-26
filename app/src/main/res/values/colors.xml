@@ -7,4 +7,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="textColorPrimary">#FFFFFFFF</color>
     <color name="textColorSecondary">#FFFFFFFF</color>
+    <color name="bg_message_left">#FFFFFFFF</color>
+    <color name="bg_message_right">#054d44</color>
 </resources>
