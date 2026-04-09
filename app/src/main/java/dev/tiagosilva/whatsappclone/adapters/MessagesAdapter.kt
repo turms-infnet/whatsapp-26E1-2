@@ -1,14 +1,20 @@
 package dev.tiagosilva.whatsappclone.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import dev.tiagosilva.whatsappclone.R
 import dev.tiagosilva.whatsappclone.data.Message
+import dev.tiagosilva.whatsappclone.fragments.FullScreenMapFragment
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,19 +66,43 @@ class MessagesAdapter(private val messages: List<Message>, private val currentUs
                 val latLng = msg.value?.split(",")
                 val lat = latLng?.getOrNull(0)?.trim()
                 val lng = latLng?.getOrNull(1)?.trim()
-                val context = holder.itemView.context
                 if (lat != null && lng != null){
-                    val url = "https://staticmap.openstreetmap.de/staticmap.php?center=$lat,$lng&zoom=15&size=400x200&markers=$lat,$lng,red"
-//                    Glide.with(context)
-//                        .load(url)
-//                        .placeholder(R.drawable.map)
-//                        .error(R.drawable.map)
-//                        .into(holder.imageMap)
+                    holder.osMapView.visibility = View.VISIBLE // View.GONE
+                    holder.imageMapPin.visibility = View.GONE // View.GONE
+                    holder.overlayMapClick.visibility = View.VISIBLE // View.Gone
+
+                    val mapView = holder.osMapView
+                    mapView.setTileSource(TileSourceFactory.MAPNIK)
+                    mapView.setMultiTouchControls(true)
+
+                    val locationPoints = GeoPoint(lat.toDouble(), lng.toDouble())
+                    val mapController = mapView.controller
+                    mapController.setZoom(16.0)
+                    mapController.setCenter(locationPoints)
+
+                    mapView.overlays.clear()
+
+                    val marker = Marker(mapView)
+                    marker.position = locationPoints
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                    mapView.overlays.add(marker)
+
+                    mapView.invalidate()
+
+                    holder.overlayMapClick.setOnClickListener {
+                        val context = holder.overlayMapClick.context
+                        if (context is FragmentActivity) {
+                            val dialog = FullScreenMapFragment.newInstance(lat.toDouble(), lng.toDouble())
+                            dialog.show(context.supportFragmentManager, "FullScreenMapFragment")
+                        }
+                    }
                 } else {
-//                    holder.imageMap.setImageResource(R.drawable.map)
+                    holder.osMapView.visibility = View.GONE
+                    holder.imageMapPin.visibility = View.GONE
+                    holder.overlayMapClick.visibility = View.GONE
                 }
 
-//                holder.txtTime.text = time ?: ""
+                holder.txtTime.text = time ?: ""
             }
         }
 
@@ -86,7 +116,9 @@ class MessagesAdapter(private val messages: List<Message>, private val currentUs
     }
 
     class MapViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        val imageMap: ImageView = view.findViewById(R.id.imageMap)
-//        val txtTime: TextView = view.findViewById(R.id.txtTime)
+        val osMapView: MapView = view.findViewById(R.id.osMapView)
+        val imageMapPin: ImageView = view.findViewById(R.id.imageMapPin)
+        val overlayMapClick: View = view.findViewById(R.id.overlayMapClick)
+        val txtTime: TextView = view.findViewById(R.id.txtTime)
     }
 }

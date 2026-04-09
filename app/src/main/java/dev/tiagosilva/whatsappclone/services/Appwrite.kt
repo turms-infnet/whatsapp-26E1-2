@@ -11,6 +11,7 @@ import io.appwrite.models.User
 import io.appwrite.services.Account
 import io.appwrite.services.Databases
 import io.appwrite.services.Storage
+import io.sentry.Sentry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -46,6 +47,7 @@ object Appwrite {
             url
         } catch (e: Exception) {
             Log.e("Appwrite", "Erro ao fazer upload: ", e)
+            Sentry.captureException(e)
             null
         }
     }

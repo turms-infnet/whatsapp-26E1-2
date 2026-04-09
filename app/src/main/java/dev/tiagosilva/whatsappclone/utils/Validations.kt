@@ -71,8 +71,6 @@ class Validations {
                     passwordConfirmInput.error = context.getString(R.string.error_password_should_be_equal)
                 }
             }
-
-
             return true
         }
     }

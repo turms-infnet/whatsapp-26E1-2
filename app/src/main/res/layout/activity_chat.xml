@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/include_toobar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar_chat"/>
 
     <FrameLayout
         android:id="@+id/fragmentChatMessages"

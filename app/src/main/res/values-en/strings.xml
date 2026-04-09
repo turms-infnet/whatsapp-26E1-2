@@ -46,4 +46,5 @@
     <string name="sendMessageButton">Botão de envio de mensagem</string>
     <string name="sendLocationButton">Botão de envio de localização</string>
     <string name="send_a_message">Envie uma mensagem</string>
+    <string name="back_button">Back Button</string>
 </resources>

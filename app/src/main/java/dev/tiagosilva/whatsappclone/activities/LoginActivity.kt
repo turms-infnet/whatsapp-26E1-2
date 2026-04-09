@@ -11,15 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import dev.tiagosilva.whatsappclone.R
-import dev.tiagosilva.whatsappclone.services.Appwrite
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
 import dev.tiagosilva.whatsappclone.utils.Validations
-import kotlinx.coroutines.launch
+import com.microsoft.clarity.Clarity
+import com.microsoft.clarity.ClarityConfig
+import com.microsoft.clarity.models.LogLevel
 
 class LoginActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
@@ -27,11 +27,19 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordInput: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val config = ClarityConfig(
+            projectId = "w7oyachl6g",
+            logLevel = LogLevel.None
+            // logLevel = LogLevel.Verbose
+        )
+        Clarity.initialize(applicationContext, config)
+
         val sharedPreferences = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
         val savedTheme = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppCompatDelegate.setDefaultNightMode(savedTheme)
 
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

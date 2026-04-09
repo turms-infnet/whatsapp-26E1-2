@@ -36,7 +36,16 @@ class ChatsAdapter (
 
         holder.txtName.text = chat.contactName
         holder.txtLastMesssage.text = chat.lastMessage
-        holder.txtTime.text = chat.time
+
+        if (!chat.time.isNullOrBlank() && chat.time != "0") {
+            val timeMillis = chat.time?.toLongOrNull() ?: 0L
+            val tz = java.util.TimeZone.getDefault()
+            val dateFormat = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+            dateFormat.timeZone = tz
+            val dateOutput = dateFormat.format(java.util.Date(timeMillis))
+            holder.txtTime.text = dateOutput
+        }
+
 
         Glide.with(holder.itemView.context)
             .load(chat.contactImage)

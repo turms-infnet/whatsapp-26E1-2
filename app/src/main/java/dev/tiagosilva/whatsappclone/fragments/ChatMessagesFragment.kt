@@ -16,6 +16,7 @@ import dev.tiagosilva.whatsappclone.R
 import dev.tiagosilva.whatsappclone.adapters.MessagesAdapter
 import dev.tiagosilva.whatsappclone.data.Message
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
+import io.sentry.Sentry
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -77,8 +78,13 @@ class ChatMessagesFragment : Fragment() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val loadedMessages = mutableListOf<Message>()
                         for(msgSnap in snapshot.children) {
-                            val msg = msgSnap.getValue(Message::class.java)
-                            if (msg != null) loadedMessages.add(msg)
+                            try {
+                                val msg = msgSnap.getValue(Message::class.java)
+                                if (msg != null) loadedMessages.add(msg)
+                            } catch (e: Exception) {
+                                Sentry.captureException(e)
+                                Log.e("ChatMessagesFragment", "Erro ao converter mensagem: ${e.message}")
+                            }
                         }
 
                         setMessages(loadedMessages)
@@ -95,7 +101,7 @@ class ChatMessagesFragment : Fragment() {
 
     private fun setMessages(newMessages: List<Message>) {
         messages.clear()
-        messages.addAll(newMessages)
+        messages.addAll(newMessages.sortedByDescending { it.date })
         messagesAdapter.notifyDataSetChanged()
         rvMessages.scrollToPosition(0)
     }

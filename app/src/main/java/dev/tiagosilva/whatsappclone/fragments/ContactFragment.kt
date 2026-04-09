@@ -20,6 +20,8 @@ import dev.tiagosilva.whatsappclone.adapters.ContactsAdapter
 import dev.tiagosilva.whatsappclone.data.Contact
 import dev.tiagosilva.whatsappclone.services.Contacts
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
+import dev.tiagosilva.whatsappclone.utils.ChatUtil
+import io.sentry.Sentry
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -80,18 +82,8 @@ class ContactFragment : Fragment() {
                 firebaseDb.child("chats").child(chatId).setValue(true).await()
             }
 
-            openChat(chatId, contact)
+            ChatUtil.openChat(chatId, contact.nome, contact.image, requireContext())
         }
-    }
-
-    private fun openChat(chatId: String?, contact: Contact?) {
-        val intent = Intent(requireContext(), ChatActivity::class.java)
-
-        intent.putExtra("chatId", chatId)
-        intent.putExtra("contactName", contact?.nome)
-        intent.putExtra("contactImage", contact?.image)
-
-        startActivity(intent)
     }
 
     private fun loadContacts(force: Boolean = false) {
@@ -107,6 +99,7 @@ class ContactFragment : Fragment() {
                 }
                 rvContacts.adapter = adapter
             } catch (e: Exception) {
+                Sentry.captureException(e)
                 Log.e("Erro na montagem do adapter", "Erro: ${e.message}")
             } finally {
                 pbLoading.visibility = View.GONE

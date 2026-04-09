@@ -3,6 +3,7 @@ package dev.tiagosilva.whatsappclone.utils
 import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.net.Uri
+import io.sentry.Sentry
 
 class FileCast {
     companion object {
@@ -19,6 +20,7 @@ class FileCast {
                 tempFile
             } catch (e:Exception) {
                 e.printStackTrace()
+                Sentry.captureException(e)
                 null
             }
         }
@@ -35,6 +37,7 @@ class FileCast {
                 tempFile
             } catch (e:Exception) {
                 e.printStackTrace()
+                Sentry.captureException(e)
                 null
             }
         }

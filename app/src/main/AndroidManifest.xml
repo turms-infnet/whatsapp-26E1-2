@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -39,6 +41,23 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
-    </application>
+    
+    <!-- Required: set your sentry.io project identifier (DSN) -->
+    <meta-data android:name="io.sentry.dsn" android:value="https://89cda449efb3576095a5caab39e7ea68@o4510999930011648.ingest.us.sentry.io/4511175628619776" />
+    <!-- Add data like request headers, user ip address and device name, see https://docs.sentry.io/platforms/android/data-management/data-collected/ for more info -->
+    <meta-data android:name="io.sentry.send-default-pii" android:value="true" />
+
+    <!-- enable automatic breadcrumbs for user interactions (clicks, swipes, scrolls) -->
+    <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
+    <!-- enable screenshot for crashes (could contain sensitive/PII data) -->
+    <meta-data android:name="io.sentry.attach-screenshot" android:value="true" />
+    <!-- enable view hierarchy for crashes -->
+    <meta-data android:name="io.sentry.attach-view-hierarchy" android:value="true" />
+
+    <!-- enable the performance API by setting a sample-rate, adjust in production env -->
+    <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
+    <!-- enable Sentry Logs -->
+    <meta-data android:name="io.sentry.logs.enabled" android:value="true" />
+</application>
 
 </manifest>

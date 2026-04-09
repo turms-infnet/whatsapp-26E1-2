@@ -3,6 +3,7 @@ package dev.tiagosilva.whatsappclone.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +20,8 @@ import com.google.android.material.tabs.TabLayout
 import dev.tiagosilva.whatsappclone.R
 import dev.tiagosilva.whatsappclone.adapters.MainTabsAdapter
 import dev.tiagosilva.whatsappclone.services.FirebaseConfiguration
+import io.sentry.Sentry
+import org.osmdroid.config.Configuration
 
 class MainActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
@@ -37,6 +40,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Configuration.getInstance().load(applicationContext, PreferenceManager.getDefaultSharedPreferences(applicationContext))
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dev.tiagosilva.whatsappclone.data.Contact
 import dev.tiagosilva.whatsappclone.data.User
+import io.sentry.Sentry
 import kotlinx.coroutines.tasks.await
 
 class Contacts {
@@ -59,6 +60,42 @@ class Contacts {
         }
 
         @JvmStatic
+        fun getNameInPhoneBook(context: Context, phoneNumber: String): String? {
+            if (phoneNumber.isNullOrBlank()) return null
+
+            val contentResolver = context.contentResolver
+            val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+            val projection = arrayOf(
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+            )
+
+            val cursor = contentResolver.query(
+                uri,
+                projection,
+                null,
+                null,
+                null,
+            )
+
+            cursor?.use {
+                val name = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val number = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+
+                while(it.moveToNext() == true) {
+                    val _number = it.getString(number)?.replace("[^0-9]".toRegex(), "")
+                    val _contactNumber = phoneNumber.replace("[^0-9]".toRegex(), "")
+
+                    if (_number?.endsWith(_contactNumber) == true) {
+                        return it.getString(name)
+                    }
+                }
+            }
+
+            return null
+        }
+
+        @JvmStatic
         suspend fun listContacts(context: Context, query: String? = null, forceRefresh: Boolean = false): List<Contact> {
             val sharedPrefs = context.getSharedPreferences("contacts_cache", Context.MODE_PRIVATE)
             val gson = Gson()
@@ -80,33 +117,25 @@ class Contacts {
                 for(contact in contacts) {
                     val phone = contact.telefone?.replace("+55", "")?.replace(Regex("[^0-9]"), "")
 
-                    val snapshot = firebaseDatabase.child("users").child(phone.toString()).get().await()
+                    val snapshot = firebaseDatabase.child("users").orderByChild("phone")
+                        .equalTo(phone.toString()).get().await()
                     if (snapshot.exists()) {
-                        val user = snapshot.getValue(User::class.java)
-                        if(user != null) {
-                            val contactItem = Contact(user.uid, contact.nome, user.phone, user.photoUrl)
+                        val userNode = snapshot.children.first()
+                        if (userNode != null) {
+                            val uid: String? = userNode.child("uid").value?.toString()
+                            val phone: String? = userNode.child("phone").value?.toString()
+                            val photoUrl: String? = userNode.child("photoUrl").value?.toString()
+
+                            val contactItem = Contact(uid, contact.nome, phone, photoUrl)
                             contactsFiltered.add(contactItem)
                         }
                     }
-//                    Pode escolher
-//                    val snapshot = firebaseDatabase.child("users").orderByChild("phone").equalTo(phone.toString()).get().await()
-//                    if (snapshot.exists()) {
-//                        val userNode = snapshot.children.first()
-//                        if (userNode != null) {
-//                            val uid: String? = userNode.child("uid").value?.toString()
-//                            val phone: String?  = userNode.child("phone").value?.toString()
-//                            val photoUrl: String?  = userNode.child("photoUrl").value?.toString()
-//
-//                            val contactItem = Contact(uid, contact.nome, phone, photoUrl)
-//                            contactsFiltered.add(contactItem)
-//                        }
-//                    }
                 }
-
                 val json = gson.toJson(contactsFiltered)
                 sharedPrefs.edit().putString("registered_contacts", json).apply()
             } catch(e: Exception) {
                 Log.e("Erro ao filtrar contatos no Firebase", "Erro: ${e.message}")
+                Sentry.captureException(e)
             }
 
             return contactsFiltered

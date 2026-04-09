@@ -27,10 +27,13 @@ import dev.tiagosilva.whatsappclone.utils.FileCast
 import kotlinx.coroutines.launch
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 
 class ProfileActivity : AppCompatActivity() {
     private val firebaseAuth = FirebaseConfiguration.getFirebaseAuth()
     private val firebaseDatabase = FirebaseConfiguration.getFirebaseDatabase()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var circleImageView: ShapeableImageView
     private lateinit var sharedPreferences: SharedPreferences
     private var currentImageFile: java.io.File? = null
@@ -103,6 +106,8 @@ class ProfileActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        firebaseAnalytics = FirebaseConfiguration.getFirebaseAnalytics(this)
 
         val toolbar: Toolbar? = findViewById(R.id.toolbar)
         toolbar?.title = "Perfil"
@@ -213,6 +218,10 @@ class ProfileActivity : AppCompatActivity() {
 
             if (updates.isNotEmpty()) {
                 firebaseDatabase.child("users").child(phoneInput.text.toString()).updateChildren(updates).addOnSuccessListener { it ->
+                    firebaseAnalytics.logEvent("update_profile") {
+                        param("nameInput", nameInput.toString())
+                        param("photoUrl", updates["photoUrl"].toString())
+                    }
                     Toast.makeText(this@ProfileActivity, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener { exception ->
                     Toast.makeText(this@ProfileActivity, "Erro ao atualizar: ${exception.message} ", Toast.LENGTH_SHORT).show()
